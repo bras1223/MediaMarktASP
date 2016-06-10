@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="loginform">
+    <ul class="breadcrumb">
+        <li><a href="@Url.Action("index","Webshop")">Home</a></li>
+        <li class="active">Login</li>
+    </ul>
+    <h2>Login</h2>
+    @{ if (ViewBag.foutmelding != "")
+        {
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oeps!</strong> @ViewBag.foutmelding
+            </div>
+            }
+     }
+    <form method="post" name="Login">
+        <div class="form-group">
+            <label class="control-label" for="inputDefault">Email</label>
+            <input type="text" class="form-control" id="inputDefault" name="gebruikersnaam">
+            <label class="control-label" for="inputDefault">Wachtwoord</label>
+            <input type="password" class="form-control" id="inputDefault" name="wachtwoord">
+        </div>
+
+        <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-default">Login</button>
+        </div>
+    </form>
+    <form action="~/Login/Registreren">
+        <div class="btn-group" role="group">
+            <br />
+            Nog geen account? Registreer hier!<br />
+            <input type="submit" class="btn btn-default" value="Registreren" />
+        </div>
+    </form>
+</div>

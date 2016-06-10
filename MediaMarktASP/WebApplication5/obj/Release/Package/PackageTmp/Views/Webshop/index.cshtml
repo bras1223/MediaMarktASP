@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "index";
+    MediaMarkt.Models.Services.ApiService api = new MediaMarkt.Models.Services.ApiService();
+}
+
+<h2>Media Markt</h2>
+
+<div class="jumbotron">
+    <h1>Producten</h1>
+    <p>Ga naar Categoriën voor al onze producten!</p>
+    <p><a class="btn btn-primary btn-lg" href='@Url.Action("Categoriën", "Webshop")'>Categoriën</a></p>
+</div>
+<div class="panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">4Launch Producten</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Prijs</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (MediaMarkt.Models.ApiProductDescription p in api.GetProducten())
+                    {
+                        var url = "http://192.168.19.214/4launch" + p.Url;
+                        <tr>
+                            <td>@p.Name</td>
+                            <td>@p.Price.ToString("##.00") €</td>
+                            <td><a type="button" class="btn btn-info" href="@url">Bekijk</a></td>
+                        </tr>
+                    }}
+            </tbody>
+        </table>
+    </div>
+</div>

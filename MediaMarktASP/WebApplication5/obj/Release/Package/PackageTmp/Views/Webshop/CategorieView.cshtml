@@ -1,0 +1,60 @@
+﻿
+@{   
+    MediaMarkt.Models.Categorie c = (MediaMarkt.Models.Categorie)ViewData["categorie"];
+    List<MediaMarkt.Models.Categorie> subs = (List<MediaMarkt.Models.Categorie>)ViewData["Subcategorien"];
+    List<MediaMarkt.Models.Product> p = (List<MediaMarkt.Models.Product>)ViewData["producten"];
+    ViewBag.Title = c.naam;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<ul class="breadcrumb">
+    <li><a href="@Url.Action("index","Webshop")">Home</a></li>
+    <li><a href="@Url.Action("Categoriën", new {id = ""})">Categoriën</a></li>
+    <li class="active">@c.naam</li>
+</ul>
+<h2>
+    @c.naam
+</h2>
+@{
+    if (subs.Count == 0)
+    {
+
+    }
+    else
+    {
+        <h3>Subcategoriën</h3>
+        <ul>
+            @foreach (var Categorie in subs)
+            {
+                <li>@Html.ActionLink(@Categorie.naam, "Categoriën", new { id = @Categorie.afkorting })</li>
+            }
+        </ul>
+    }
+}
+<h3>Producten</h3>
+@{ if (p.Count == 0)
+    {
+            <h4>Er bevinden zich geen producten in deze categorie.</h4>       
+    }
+    else {
+        <table class="table table-striped table-hover" >        
+            <thead>
+            <th>Naam</th>
+            <th>Omschrijving</th>
+            <th>Prijs</th>
+            <th></th>
+            </thead>
+                <tbody>
+                    @foreach (MediaMarkt.Models.Product product in p)
+                    {
+                        <tr>
+                            <td>@product.naam</td>
+                            <td>@product.omschrijving</td>
+                            <td>€@product.prijs</td>
+                            <td><a type="button" class="btn btn-info" href='@Url.Action("Product", new { id = @c.afkorting, artikelnummer = @product.artikelnummer })'>Bekijk</a></td>
+                        </tr>
+                    }
+                </tbody>
+        </table>
+        }
+    }

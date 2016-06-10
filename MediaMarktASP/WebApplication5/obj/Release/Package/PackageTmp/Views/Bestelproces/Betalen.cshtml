@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Betalen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Betalen</h2>
+<p>U kunt het bedrag van € @ViewData["Totaalprijs"] op verschillende manieren betalen:</p>
+<form method="post" name="BetalenOptie" class="form-horizontal">
+    <fieldset>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">Rol</label>
+            <div class="col-lg-10">
+                <div class="radio">
+                    <label>
+                        <input name="optionsRadios" id="optionsRadios1" value="1" checked="" type="radio">
+                        iDeal
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input name="optionsRadios" id="optionsRadios2" value="2" type="radio">
+                        PayPal
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input name="optionsRadios" id="optionsRadios3" value="3" type="radio">
+                        Overboeking
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input name="optionsRadios" id="optionsRadios4" value="4" type="radio">
+                        Rembours
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" class="btn btn-primary">Betalen</button>
+            </div>
+        </div>
+    </fieldset>
+</form>

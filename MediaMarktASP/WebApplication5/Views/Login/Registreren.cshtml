@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "Registreren";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb">
+    <li><a href="@Url.Action("index","Webshop")">Home</a></li>
+    <li class="active">Registreren</li>
+</ul>
+<h2>Registreren</h2>
+@{ if (ViewBag.foutmelding != "")
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Oeps!</strong> @ViewBag.foutmelding
+        </div>
+    }
+}
+<div class="main-login main-center">
+    <form action="~/Login">
+        <div class="btn-group" role="group">
+            <br />
+            Al een account? Log hier in!<br />
+            <input type="submit" class="btn btn-default" value="Login" />
+        </div>
+    </form>
+    <form method="post" name="Registreren" class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <label for="Voornaam" class="col-lg-2 control-label">Voornaam</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Voornaam" placeholder="Voornaam" name="Voornaam">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Tussenvoegsel" class="col-lg-2 control-label">Tussenvoegsel</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="Tussenvoegsel" placeholder="Tussenvoegsel" name="Tussenvoegsel">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Achternaam" class="col-lg-2 control-label">Achternaam</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Achternaam" placeholder="Achternaam" name="Achternaam">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Straatnaam" class="col-lg-2 control-label">Straatnaam</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Straatnaam" placeholder="Straatnaam" name="Straatnaam">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Huisnummer" class="col-lg-2 control-label">Huisnummer</label>
+                    <div class="col-lg-10">
+                        <input type="number" required class="form-control" id="Huisnummer" placeholder="Huisnummer" name="Huisnummer">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Postcode" class="col-lg-2 control-label">Postcode</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Postcode" placeholder="Postcode" name="Postcode">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Stad" class="col-lg-2 control-label">Stad</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Stad" placeholder="Stad" name="Stad">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Email" class="col-lg-2 control-label">Email</label>
+                    <div class="col-lg-10">
+                        <input type="text" required class="form-control" id="Email" placeholder="Email" name="Email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Wachtwoord" class="col-lg-2 control-label">Wachtwoord</label>
+                    <div class="col-lg-10">
+                        <input type="password" required class="form-control" id="Wachtwoord" placeholder="Wachtwoord" name="Wachtwoord">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="submit" class="btn btn-primary">Aanmelden</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+</div>

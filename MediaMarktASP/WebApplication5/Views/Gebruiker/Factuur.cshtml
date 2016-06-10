@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "Factuur";
+    Layout = "~/Views/Shared/_Layout - Factuur.cshtml";
+    MediaMarkt.Models.Bestelling b = ViewData["bestelling"] as MediaMarkt.Models.Bestelling;
+    MediaMarkt.Models.Gebruiker g = Session["Gebruiker"] as MediaMarkt.Models.Gebruiker;
+}
+
+<div class="well well-sm">
+ <div class="text-danger text-center">Bestelling printen, Factuurdatum: @b.Besteldatum</div>
+</div>
+<h2>De bestelling @b.Bestelnummer van @b.Besteldatum</h2>
+<h3>Mijn Media Markt Klantnummer: @g.KlantID</h3>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Producten</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Productomschrijving</th>
+                    <th>Artikelnummer</th>
+                    <th>Aantal</th>
+                    <th>Prijs</th>
+                    <th>Totaal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (MediaMarkt.Models.Product p in b.Producten) {
+                    var dipshit = p.prijs * p.hoeveelheid;
+                    <tr>
+                        <td>
+                            @p.naam
+                        </td>
+                        <td>
+                            @p.artikelnummer
+                        </td>
+                        <td>
+                            @p.hoeveelheid
+                        </td>
+                        <td>
+                            €@p.prijs
+                        </td>
+                        <td>
+                            €@dipshit
+                        </td>
+                    </tr>
+}
+
+            </tbody>
+        </table>
+        <h2 class="text-right">Totaal: €@b.Totaalprijs</h2>
+    </div>
+</div>
+<div class="col-md-6">
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Jouw gegevens</h3>
+    </div>
+    <div class="panel-body">
+        <h3>Factuuradres:</h3>
+        @g.Voornaam @g.Tussenvoegsel @g.Achternaam<br />
+        @g.Straatnaam @g.Huisnummer<br />
+        @g.Postcode @g.Stad<br />
+
+        @g.Email
+    </div>
+</div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Betaalgegevens</h3>
+        </div>
+        <div class="panel-body">
+            <h3>Betaalmethode:</h3>
+            @b.Betaalmethode
+        </div>
+    </div>
+</div>
+</div>

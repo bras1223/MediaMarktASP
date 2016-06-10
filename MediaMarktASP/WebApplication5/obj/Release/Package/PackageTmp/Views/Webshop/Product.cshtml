@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    MediaMarkt.Models.Product p = (MediaMarkt.Models.Product)ViewData["product"];
+    MediaMarkt.Models.Categorie c = (MediaMarkt.Models.Categorie)ViewData["categorie"];
+}
+<ul class="breadcrumb">
+    <li><a href="@Url.Action("index", "Webshop")">Home</a></li>
+    <li><a href="@Url.Action("Categoriën", new { id = "" })">Categoriën</a></li>
+    <li><a href="@Url.Action("Categoriën", new { id = @c.afkorting })">@c.naam</a></li>
+    <li class="active">@p.naam</li>
+</ul>
+
+<div class="col-md-4">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Foto's komen hier</h3>
+        </div>
+        <div class="panel-body">
+            <p>Foto's</p>
+            <img src="~/Content/img/@(p.artikelnummer).png" class="img-responsive img-rounded" />
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">@p.naam</h3>
+        </div>
+        <div class="panel-body">
+            <p>artikelnummer: @p.artikelnummer</p>
+
+            <p>@p.omschrijving</p>
+            <h4>Specificaties</h4>
+            <table class="table table-striped">
+                <thead>
+                <th></th>
+                <th></th>
+                </thead>
+                <tbody>
+                    @foreach (MediaMarkt.Models.Specificaties spec in p.specificaties)
+                    {
+                        <tr>
+                            <th>@spec.naam</th>
+                            <td>@spec.uitwerking</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-3">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Prijs en beschikbaarheid</h3>
+        </div>
+        <div class="panel-body">
+            <h1>€@p.prijs</h1>
+            <h4>Voorraad: @p.voorraad</h4>
+            <a type="button" class="btn btn-primary" href='@Url.Action("WinkelmandjeAdd", new {id = @c.afkorting, artikelnummer = @p.artikelnummer })'>Bestel nu</a>
+        </div>
+    </div>
+</div>

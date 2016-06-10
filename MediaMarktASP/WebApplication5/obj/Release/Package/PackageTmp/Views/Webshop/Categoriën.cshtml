@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Categoriën";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb">
+    <li><a href="@Url.Action("index","Webshop")">Home</a></li>
+    <li class="active">Categoriën</li>
+</ul>
+<h2>Categoriën</h2>
+<p>Selecteer hieronder een categorie.</p>
+
+<ul>
+    @foreach (var Categorie in ViewBag.Data.Hoofdcategorien as List<MediaMarkt.Models.Categorie>)
+        {
+        <li>@Html.ActionLink(@Categorie.naam, "Categoriën", new {id = @Categorie.afkorting})</li>
+        }
+</ul>
+@ViewData["naam"]
