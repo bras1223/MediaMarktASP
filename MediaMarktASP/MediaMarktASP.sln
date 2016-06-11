@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaMarkt", "WebApplication5\MediaMarkt.csproj", "{DB417E60-E100-47BC-95B9-6B1F5D9C93CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestMediaMarkt", "UnitTestProject1\UnitTestMediaMarkt.csproj", "{763640F6-976D-4C9F-8899-952E277CB9E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DB417E60-E100-47BC-95B9-6B1F5D9C93CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB417E60-E100-47BC-95B9-6B1F5D9C93CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB417E60-E100-47BC-95B9-6B1F5D9C93CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{763640F6-976D-4C9F-8899-952E277CB9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{763640F6-976D-4C9F-8899-952E277CB9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{763640F6-976D-4C9F-8899-952E277CB9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{763640F6-976D-4C9F-8899-952E277CB9E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

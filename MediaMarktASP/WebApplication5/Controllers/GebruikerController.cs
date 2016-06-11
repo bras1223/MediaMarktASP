@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MvcRazorToPdf;
 
 namespace MediaMarkt.Controllers
 {
@@ -11,6 +10,8 @@ namespace MediaMarkt.Controllers
     {
         Models.Webshop webshop = new Models.Webshop();
         // GET: Gebruiker
+
+        //Gebruikerinfo laden in accountpagina
         public ActionResult Account()
         {
             if(Session["Gebruiker"] != null)
@@ -26,6 +27,7 @@ namespace MediaMarkt.Controllers
             }
         }
 
+        //Bestelling informatie ophalen, voor factuur
         public ActionResult Factuur(int bestelnummer)
         {
             Models.Bestelling bestelling = null;

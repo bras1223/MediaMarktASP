@@ -11,6 +11,8 @@ namespace MediaMarkt.Controllers
     {
         Webshop webshop = new Webshop();
         // GET: Login
+
+        //Loginpagina login-check/view tonen
         public ActionResult Index(string gebruikersnaam, string wachtwoord)
         {
             ViewBag.foutmelding = "";
@@ -32,12 +34,14 @@ namespace MediaMarkt.Controllers
         }
 
         // GET: Registreren
+        //Registratiepagina tonen
         public ActionResult Registreren()
         {
             ViewBag.foutmelding = "";
             return View();
         }
 
+        //Registratie in database invoeren/ weigeren
         [HttpPost]
         public ActionResult Registreren(string Voornaam, string Tussenvoegsel, string Achternaam, string Straatnaam, int? Huisnummer, string Postcode, string Stad, string Email, string Wachtwoord)
         {
@@ -51,16 +55,17 @@ namespace MediaMarkt.Controllers
                 }
                 else
                 {
-                    ViewBag.foutmelding = "Vul alle velden in!";
+                    ViewBag.foutmelding = "Vul alle velden correct in!";
                     return View();
                 }
             } else
             {
-                ViewBag.foutmelding = "Vul alle velden in!";
+                ViewBag.foutmelding = "Vul alle velden correct in!";
                 return View();
             }
         }
         
+        //Gebruiker uitloggen
         public ActionResult Uitloggen()
         {
             Session["Gebruiker"] = null;

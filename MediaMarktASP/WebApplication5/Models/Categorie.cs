@@ -7,6 +7,8 @@ namespace MediaMarkt.Models
 {
     public class Categorie
     {
+        //Autoproperties
+        public List<Categorie> subcategorie { get; private set; } = new List<Categorie>();
         public List<Product> producten { get; private set; } = new List<Product>();
         public string naam
         {
@@ -23,6 +25,7 @@ namespace MediaMarkt.Models
             this.naam = naam;
             this.afkorting = afkorting;
             this.producten = database.Producten(this.afkorting);
+            this.subcategorie = database.SubCategorien(afkorting);
         }
     }
 }

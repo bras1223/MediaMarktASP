@@ -7,6 +7,7 @@ namespace MediaMarkt.Models
 {
     public class Bestelling
     {
+        //Autoproperties
         public int Bestelnummer
         {
             get; private set;

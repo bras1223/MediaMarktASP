@@ -7,6 +7,7 @@ namespace MediaMarkt.Models
 {
     public class Specificaties
     {
+        //Autoproperties
         public string naam
         {
             get; private set;

@@ -5,6 +5,7 @@ using System.Web;
 
 namespace MediaMarkt.Models
 {
+    //Standaard informatie van mijn API.
     public class Apiproducten
     {
 

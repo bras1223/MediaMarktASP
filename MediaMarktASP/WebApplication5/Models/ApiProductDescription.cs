@@ -1,5 +1,7 @@
 ﻿namespace MediaMarkt.Models
 {
+
+    //Standaard info gekregen van API
     public class ApiProductDescription
     {
         public string Name { get; set; }

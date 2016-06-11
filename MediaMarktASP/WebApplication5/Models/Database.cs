@@ -23,12 +23,14 @@ namespace MediaMarkt.Models
             con = new OracleConnection(constr);
         }
 
+        #region producten
+        //Producten van een bepaalde categorie uit database ophalen
         public List<Product> Producten(string categorie)
         {
             List<Product> producten = new List<Product>();
 
             con.Open();
-          
+
             command = new OracleCommand("SELECT Artikelnummer, Categorie, Naam, Prijs, Omschrijving, Voorraad FROM Artikel WHERE Categorie =:categorie", con);
             command.Parameters.Add(new OracleParameter(":categorie", OracleDbType.Varchar2)).Value = categorie;
             reader = command.ExecuteReader();
@@ -41,6 +43,8 @@ namespace MediaMarkt.Models
 
             return producten;
         }
+
+        //Producten van een bestelling ophalen
         public List<Product> ProductenBestelling(int bestelnummer)
         {
             List<Product> producten = new List<Product>();
@@ -59,6 +63,8 @@ namespace MediaMarkt.Models
 
             return producten;
         }
+
+        //Producten ophalen
         public List<Product> GetProducten()
         {
             List<Product> producten = new List<Product>();
@@ -76,6 +82,8 @@ namespace MediaMarkt.Models
 
             return producten;
         }
+
+        //Specificaties ophalen
         public List<Specificaties> GetSpecs(Int32 artikelnummer)
         {
             List<Specificaties> specificaties = new List<Specificaties>();
@@ -95,75 +103,10 @@ namespace MediaMarkt.Models
 
             return specificaties;
         }
+        #endregion
 
-        public List<Bestelling> GetOrders(int KlantID)
-        {
-            List<Bestelling> bestellingen = new List<Bestelling>();
-
-            con.Open();
-
-            //Eigen hulpvragen weergeven waarop een nieuwe reactie is gegeven.
-            command = new OracleCommand("SELECT b.Bestelnummer, b.Besteldatum, f.Prijs, (SELECT s.NAME_STR FROM STATUS s WHERE s.STATUS_ID = b.STATUS_ID) AS STATUS, (SELECT BESCHRIJVING FROM BETAALWIJZE WHERE ID = f.Betaalwijze) AS BETAALWIJZE FROM Bestelling b, Factuur f WHERE f.Bestelnummer = b.Bestelnummer AND b.KlantID =:KlantID", con);
-            command.Parameters.Add(new OracleParameter(":KlantID", OracleDbType.Varchar2)).Value = KlantID;
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Bestelling bestelling = new Bestelling(Convert.ToInt32(reader["Bestelnummer"]), Convert.ToDateTime(reader["Besteldatum"]), Convert.ToInt32(reader["Prijs"]), reader["STATUS"].ToString(), reader["BETAALWIJZE"].ToString());
-                bestellingen.Add(bestelling);
-            }
-            con.Close();
-
-            return bestellingen;
-        }
-        public List<Categorie> Categorien()
-        {
-            List<Categorie> categorien = new List<Categorie>();
-            con.Open();
-
-            command = new OracleCommand("SELECT * FROM Categorie", con);
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
-                categorien.Add(categorie);
-            }
-            con.Close();
-
-            return categorien;
-        }
-        public List<Categorie> HoofdCategorien()
-        {
-            List<Categorie> categorien = new List<Categorie>();
-            con.Open();
-
-            command = new OracleCommand("SELECT * FROM Categorie WHERE Hoofdcat IS NULL", con);
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
-                categorien.Add(categorie);
-            }
-            con.Close();
-
-            return categorien;
-        }
-        public List<Categorie> SubCategorien(string Hoofdcat)
-        {
-            List<Categorie> categorien = new List<Categorie>();
-            con.Open();
-
-            command = new OracleCommand("SELECT * FROM Categorie WHERE Hoofdcat =:hoofdcat", con);
-            command.Parameters.Add(new OracleParameter(":hoofdcat", OracleDbType.Varchar2)).Value = Hoofdcat;
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
-                categorien.Add(categorie);
-            }
-            con.Close();
-
-            return categorien;
-        }
+        #region gebruiker
+        //Gebruiker inloggen
         public Gebruiker GebruikerLogin(string email, string wachtwoord)
         {
             Gebruiker gebruiker = null;
@@ -180,9 +123,9 @@ namespace MediaMarkt.Models
                 {
                     gebruiker = new Gebruiker(Convert.ToInt32(reader["KlantID"]), reader["Email"].ToString(), reader["Voornaam"].ToString(), reader["Tussenvoegsel"].ToString(), reader["Achternaam"].ToString(), reader["Straatnaam"].ToString(), Convert.ToInt32(reader["Huisnummer"]), reader["Postcode"].ToString(), reader["Stad"].ToString());
                     //Properties toekennen aan gebruiken.
-                    
+
                 }
-                    
+
             }
             catch
             {
@@ -190,16 +133,19 @@ namespace MediaMarkt.Models
             }
             finally
             {
-                
+
                 con.Close();
             }
-return gebruiker;
+            return gebruiker;
         }
 
+
+        //Klant registreren
         public bool AddKlant(string Voornaam, string Tussenvoegsel, string Achternaam, string Straatnaam, int? Huisnummer, string Postcode, string Stad, string Email, string Wachtwoord)
         {
-                con.Open();
-            try {
+            con.Open();
+            try
+            {
                 command = new OracleCommand(@"INSERT INTO KLANT(VOORNAAM, TUSSENVOEGSEL, ACHTERNAAM, STRAATNAAM, HUISNUMMER, POSTCODE, EMAIL, WACHTWOORD, STAD)" +
                                                   "VALUES(:Voornaam, :Tussenvoegsel, :Achternaam, :Straatnaam, :Huisnummer, :Postcode, :Email, :Wachtwoord, :Stad)", con);
                 command.Parameters.Add(new OracleParameter(":Voornaam", OracleDbType.Varchar2)).Value = Voornaam;
@@ -222,8 +168,10 @@ return gebruiker;
             finally
             {
                 con.Close();
-            }             
+            }
         }
+
+        //Wachtwoord encrypten
         public string EncryptString(string toEncrypt)
         {
             SHA256Managed crypt = new SHA256Managed();
@@ -236,6 +184,28 @@ return gebruiker;
             return hash.ToString();
         }
 
+        //Bestellingen ophalen
+        public List<Bestelling> GetOrders(int KlantID)
+        {
+            List<Bestelling> bestellingen = new List<Bestelling>();
+
+            con.Open();
+
+            //Eigen hulpvragen weergeven waarop een nieuwe reactie is gegeven.
+            command = new OracleCommand("SELECT b.Bestelnummer, b.Besteldatum, f.Prijs, (SELECT s.NAME_STR FROM STATUS s WHERE s.STATUS_ID = b.STATUS_ID) AS STATUS, (SELECT BESCHRIJVING FROM BETAALWIJZE WHERE ID = f.Betaalwijze) AS BETAALWIJZE FROM Bestelling b, Factuur f WHERE f.Bestelnummer = b.Bestelnummer AND b.KlantID =:KlantID", con);
+            command.Parameters.Add(new OracleParameter(":KlantID", OracleDbType.Varchar2)).Value = KlantID;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Bestelling bestelling = new Bestelling(Convert.ToInt32(reader["Bestelnummer"]), Convert.ToDateTime(reader["Besteldatum"]), Convert.ToInt32(reader["Prijs"]), reader["STATUS"].ToString(), reader["BETAALWIJZE"].ToString());
+                bestellingen.Add(bestelling);
+            }
+            con.Close();
+
+            return bestellingen;
+        }
+
+        //Bestelling plaatsen
         public void AddOrder(string betaalwijze, List<Product> producten, Gebruiker gebruiker)
         {
             con.Open();
@@ -244,48 +214,107 @@ return gebruiker;
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                    if (reader["bestelnummer"].ToString() != "")
-                    {
+                if (reader["bestelnummer"].ToString() != "")
+                {
                     ordernumber = Convert.ToInt32(reader["bestelnummer"]);
-                    }   
+                }
             }
             ordernumber += 1;
-                //Bestelling aanmaken
-                command = new OracleCommand(@"INSERT INTO BESTELLING(BESTELNUMMER, KLANTID, BESTELDATUM)" +
-                                                  "VALUES(:Bestelnummer, :KlantID, :Besteldatum)", con);
+
+            command = new OracleCommand(@"INSERT INTO BESTELLING(BESTELNUMMER, KLANTID, BESTELDATUM)" +
+                                              "VALUES(:Bestelnummer, :KlantID, :Besteldatum)", con);
+            command.Parameters.Add(new OracleParameter(":Bestelnummer", OracleDbType.Int32)).Value = ordernumber;
+            command.Parameters.Add(new OracleParameter(":KlantID", OracleDbType.Int32)).Value = gebruiker.KlantID;
+            command.Parameters.Add(new OracleParameter(":Besteldatum", OracleDbType.Date)).Value = DateTime.Now;
+            command.ExecuteNonQuery();
+
+            foreach (Product product in producten)
+            {
+                command = new OracleCommand(@"INSERT INTO ARTIKELBESTELLING(BESTELNUMMER, ARTIKELNUMMER, HOEVEELHEID, PRIJS)" +
+                                  "VALUES(:Bestelnummer, :Artikelnummer, :Hoeveelheid, :Prijs)", con);
                 command.Parameters.Add(new OracleParameter(":Bestelnummer", OracleDbType.Int32)).Value = ordernumber;
-                command.Parameters.Add(new OracleParameter(":KlantID", OracleDbType.Int32)).Value = gebruiker.KlantID;
-                command.Parameters.Add(new OracleParameter(":Besteldatum", OracleDbType.Date)).Value = DateTime.Now;
+                command.Parameters.Add(new OracleParameter(":Artikelnummer", OracleDbType.Int32)).Value = product.artikelnummer;
+                command.Parameters.Add(new OracleParameter(":Hoeveelheid", OracleDbType.Int32)).Value = product.hoeveelheid;
+                command.Parameters.Add(new OracleParameter(":Prijs", OracleDbType.Int32)).Value = product.prijs;
                 command.ExecuteNonQuery();
 
-                foreach (Product product in producten)
-                {
-                    command = new OracleCommand(@"INSERT INTO ARTIKELBESTELLING(BESTELNUMMER, ARTIKELNUMMER, HOEVEELHEID, PRIJS)" +
-                                      "VALUES(:Bestelnummer, :Artikelnummer, :Hoeveelheid, :Prijs)", con);
-                    command.Parameters.Add(new OracleParameter(":Bestelnummer", OracleDbType.Int32)).Value = ordernumber;
-                    command.Parameters.Add(new OracleParameter(":Artikelnummer", OracleDbType.Int32)).Value = product.artikelnummer;
-                    command.Parameters.Add(new OracleParameter(":Hoeveelheid", OracleDbType.Int32)).Value = product.hoeveelheid;
-                    command.Parameters.Add(new OracleParameter(":Prijs", OracleDbType.Int32)).Value = product.prijs;
-                    command.ExecuteNonQuery();
-
-                    command = new OracleCommand(@"UPDATE ARTIKEL SET VOORRAAD =:voorraad WHERE ARTIKELNUMMER=:artikelnummer", con);
-                    command.Parameters.Add(new OracleParameter(":voorraad", OracleDbType.Int32)).Value = product.voorraad;
-                    command.Parameters.Add(new OracleParameter(":artikelnummer", OracleDbType.Int32)).Value = product.artikelnummer;
-                    command.ExecuteNonQuery();
+                command = new OracleCommand(@"UPDATE ARTIKEL SET VOORRAAD =:voorraad WHERE ARTIKELNUMMER=:artikelnummer", con);
+                command.Parameters.Add(new OracleParameter(":voorraad", OracleDbType.Int32)).Value = product.voorraad;
+                command.Parameters.Add(new OracleParameter(":artikelnummer", OracleDbType.Int32)).Value = product.artikelnummer;
+                command.ExecuteNonQuery();
             }
 
-                command = new OracleCommand(@"INSERT INTO FACTUUR(FACTUURNUMMER, FACTUURADRES, BETAALWIJZE, BETAALSTATUS, BESTELNUMMER, PRIJS)" +
-                                  "VALUES(:Factuurnummer, :Factuuradres, :Betaalwijze, :Betaalstatus, :Bestelnummer, :Prijs)", con);
-                command.Parameters.Add(new OracleParameter(":Factuurnummer", OracleDbType.Int32)).Value = ordernumber;
-                command.Parameters.Add(new OracleParameter(":Factuuradres", OracleDbType.Varchar2)).Value = (gebruiker.Straatnaam + " "+gebruiker.Huisnummer + " " + gebruiker.Postcode + " " + gebruiker.Stad);
-                command.Parameters.Add(new OracleParameter(":Betaalwijze", OracleDbType.Int32)).Value = Convert.ToInt32(betaalwijze);
-                command.Parameters.Add(new OracleParameter(":Betaalstatus", OracleDbType.Char)).Value = 'N';
-                command.Parameters.Add(new OracleParameter(":Bestelnummer", OracleDbType.Int32)).Value = ordernumber;
-                command.Parameters.Add(new OracleParameter(":Prijs", OracleDbType.Int32)).Value = producten.Sum(x => x.prijs * x.hoeveelheid);
+            command = new OracleCommand(@"INSERT INTO FACTUUR(FACTUURNUMMER, FACTUURADRES, BETAALWIJZE, BETAALSTATUS, BESTELNUMMER, PRIJS)" +
+                              "VALUES(:Factuurnummer, :Factuuradres, :Betaalwijze, :Betaalstatus, :Bestelnummer, :Prijs)", con);
+            command.Parameters.Add(new OracleParameter(":Factuurnummer", OracleDbType.Int32)).Value = ordernumber;
+            command.Parameters.Add(new OracleParameter(":Factuuradres", OracleDbType.Varchar2)).Value = (gebruiker.Straatnaam + " " + gebruiker.Huisnummer + " " + gebruiker.Postcode + " " + gebruiker.Stad);
+            command.Parameters.Add(new OracleParameter(":Betaalwijze", OracleDbType.Int32)).Value = Convert.ToInt32(betaalwijze);
+            command.Parameters.Add(new OracleParameter(":Betaalstatus", OracleDbType.Char)).Value = 'N';
+            command.Parameters.Add(new OracleParameter(":Bestelnummer", OracleDbType.Int32)).Value = ordernumber;
+            command.Parameters.Add(new OracleParameter(":Prijs", OracleDbType.Int32)).Value = producten.Sum(x => x.prijs * x.hoeveelheid);
             command.ExecuteNonQuery();
 
 
-                con.Close();
+            con.Close();
         }
+        #endregion
+
+        #region categorie
+        
+        //Alle categorieën ophalen
+        public List<Categorie> Categorien()
+        {
+            List<Categorie> categorien = new List<Categorie>();
+            con.Open();
+
+            command = new OracleCommand("SELECT * FROM Categorie", con);
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
+                categorien.Add(categorie);
+            }
+            con.Close();
+
+            return categorien;
+        }
+
+        //Bovenste categorieën ophalen
+        public List<Categorie> HoofdCategorien()
+        {
+            List<Categorie> categorien = new List<Categorie>();
+            con.Open();
+
+            command = new OracleCommand("SELECT * FROM Categorie WHERE Hoofdcat IS NULL", con);
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
+                categorien.Add(categorie);
+            }
+            con.Close();
+
+            return categorien;
+        }
+
+        //Onderliggende categorieën ophalen
+        public List<Categorie> SubCategorien(string Hoofdcat)
+        {
+            List<Categorie> categorien = new List<Categorie>();
+            con.Open();
+
+            command = new OracleCommand("SELECT * FROM Categorie WHERE Hoofdcat =:hoofdcat", con);
+            command.Parameters.Add(new OracleParameter(":hoofdcat", OracleDbType.Varchar2)).Value = Hoofdcat;
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Categorie categorie = new Categorie(reader["Naam"].ToString(), reader["CatID"].ToString());
+                categorien.Add(categorie);
+            }
+            con.Close();
+
+            return categorien;
+        }
+        #endregion
     }
 }

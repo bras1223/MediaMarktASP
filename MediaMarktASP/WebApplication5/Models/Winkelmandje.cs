@@ -7,7 +7,11 @@ namespace MediaMarkt.Models
 {
     public class Winkelmandje
     {
+        //Autoproperties
         public List<Product> producten { get; private set; } = new List<Product>();
+        Database database = new Database();
+
+        //Product toevoegen aan winkelmandje
         public void AddProduct(Product product)
         {
             bool toegevoegd = false;
@@ -25,6 +29,8 @@ namespace MediaMarkt.Models
                 producten.Add(product);
             }
         }
+
+        //product verwijderen uit winkelmandje
         public void DeleteProduct(Product product)
         {
             bool verwijderd = false;
@@ -44,6 +50,12 @@ namespace MediaMarkt.Models
             {
                 producten.Remove(product);
             }
+        }
+
+        //Winkelmandje in database invoeren als bestelling
+        public void BestelWinkelmandje(string betaalwijze, Gebruiker gebruiker)
+        {
+            database.AddOrder(betaalwijze, this.producten, gebruiker);
         }
     }
 }

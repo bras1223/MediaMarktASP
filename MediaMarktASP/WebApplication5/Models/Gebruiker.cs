@@ -7,7 +7,8 @@ namespace MediaMarkt.Models
 {
     public class Gebruiker
     {
-       public int KlantID
+        //Autoproperties
+        public int KlantID
         {
             get; private set;
         }
@@ -59,6 +60,8 @@ namespace MediaMarkt.Models
             this.Postcode = postcode;
             this.Stad = stad;
         }
+
+        //bestellingen uit database ophalen
         public void UpdateBestellingen()
         {
             this.bestellingen = database.GetOrders(this.KlantID);

@@ -12,12 +12,15 @@ namespace MediaMarkt.Controllers
     {
         Webshop webshop = new Webshop();
         // GET api/<controller>
+
+        //Stuur List door, bij een get statement.
         public IEnumerable<Apiproducten> Get()
         {
             List<Models.Product> producten = webshop.database.GetProducten();
             List<Models.Apiproducten> apiproducten = new List<Apiproducten>();
             foreach(Product product in producten)
             {
+                //Plaatsen van producten in de door te sturen list.
                 apiproducten.Add(new Apiproducten
                 {
                     Naam = product.naam,

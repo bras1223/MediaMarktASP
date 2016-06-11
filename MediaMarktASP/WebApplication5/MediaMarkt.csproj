@@ -167,8 +167,6 @@
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\mediamarkt.pubxml" />
-    <None Include="Properties\PublishProfiles\mediamarkt2.pubxml" />
-    <None Include="Properties\PublishProfiles\mediamarkt3.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />

@@ -8,6 +8,7 @@ namespace MediaMarkt.Models
     public class Product
     {
         Database database = new Database();
+        //Autoproperties
         public int artikelnummer
         {
             get; private set;
@@ -51,6 +52,7 @@ namespace MediaMarkt.Models
             this.hoeveelheid = hoeveelheid;
         }
 
+        //Specificaties uit database ophalen
         public void UpdateSpecificaties()
         {
             this.specificaties = database.GetSpecs(this.artikelnummer);
